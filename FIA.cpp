@@ -11,6 +11,6 @@ int fia_method
   double T //temperature (K)
 )
 {
-
+  A = 1; // just returns a dummy value to do the rest of the calculations
   return 0;
 }
