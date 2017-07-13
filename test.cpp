@@ -17,6 +17,9 @@ int error_code =  fia_method
   1000.0, //maximum room strength (Pa)
   46.0, //design concentration (%)
   370.0 //temperature (K)
+  0.773824, // K1-Constant
+  0.0002832967, // K2- Constant
+    
 );
 
     
