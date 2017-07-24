@@ -11,19 +11,19 @@ class vent_calculation {
 
 private:
 
-	double sp_volume;           // specific vapour volume of air given (T)
-	double room_str;            // Room Strength (P)
-	double volume;              // Volume
-	double desg_const;          // Design concentration (C) in Percentage
-	double flooding_factor;     // flooding factor
-	double mass_fl_rate_agent;  // Mass Flow of Extinguishant (kgs/second)
-	int ext_agent;              // Extinguishant Agent Index
-	double discharge_time;      // Discharge Time
-	//double ac;
+    double encl_volume;             // Volume (V)
+    double design_concentration;    // Design concentration (C) in Percentage
+    int agent_index;                // Extinguishant Agent Index
+    double discharge_time;          // Discharge Time (t)
 
-	double FIA_Area;            // Total Vent Area (Sq mtr)
-	double FSSA_Area;           // Pressure Relief Vent Area
-    double temperature;         // Temperature
+
+    //double ext_vent_area = 1.0;     // Existing Vent Area
+    //double pressure_limit;          // Enclosure pressure Limit
+   // double safty_area = 1.0;        // Saftey factor for vent area
+
+    double FIA_Area;                // Total Vent Area (Sq mtr)
+    double FSSA_Area;               // Pressure Relief Vent Area
+
 
 
 
@@ -32,36 +32,51 @@ public:
     /*
      *  Default Constructor
      */
-	vent_calculation();
+    vent_calculation();
 
     /*
-     * Constructor for FIA
+     * Constructor for vent_calculation
+     * @param agent_id takes an int argument for Extinguishant agent index
+     * @param volume takes a double value for Encosure volume
+     * @param design_concen takes a double value for Design concentration
+     * @param discharge_time takes a double for Discharge time
      */
-	vent_calculation( double temperature,
-                      double sp_volume,
-                      double room_str,
-                      double vol,
-                      double desg_const,
-                      double flood_fact,
-                      double fl_rate,
-                      int ext_agent,
-                      double discharge_time):
-            temperature(temperature),
-            sp_volume(sp_volume),
-            room_str(room_str),
-            volume(vol),
-            desg_const(desg_const),
-            flooding_factor(flood_fact),
-            mass_fl_rate_agent(fl_rate),
-            ext_agent(ext_agent),
+    vent_calculation( int agent_id,
+                      double volume,
+                      double design_concen,
+                      double discharge_time
+    ):
+            agent_index(agent_id),
+            encl_volume(volume),
+            design_concentration(design_concen),
             discharge_time(discharge_time)
     {};
 
-    double get_FIA_vent_area();
-	double get_FSSA_vent_area();
 
-	double FIA();
-	double FSSA();
+    /*
+     * @method for FIA Vent Area
+     * @param temperature takes a double for Temperature
+     * @param spec_vol_extinguishant takes a double for Specific vapour volume of air given
+     * @param room_strength takes a double for Room Strength
+     * @param flooding_factor takes a double for flooding factor
+     * @param mass_flow_rate takes a double for Mass flow rate of extinguishant
+     */
+
+    double get_FIA_vent_area(double temperature, double spec_vol_extinguishant, double room_strength, double flooding_factor, double mass_flow_rate);
+
+    /*
+     * Method for FSSA Vent Area
+     * @param ext_vent_area takes a double value for Existing vent area
+     * @param pressure_limit takes a double value for Enclosure pressure Limit
+     * @param safety_factor_area takes a double value for Safety factor vent area
+     * @param rel_humidity takes a double value for Relative Humidity of agent
+     * @param hd_index takes a int value for Hardware index
+     */
+
+    double get_FSSA_vent_area(double ext_vent_area, double pressure_limit , double safety_factor_area ,double rel_humidity , int hd_index );
+
+    double FIA();
+    double FSSA();
 
 
 };
