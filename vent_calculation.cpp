@@ -7,7 +7,9 @@
 
 #include "vent_calculation.h"
 #include "cmath"
+#include <iostream>
 
+using namespace std;
 
 double vent_calculation::FIA(){
 
@@ -65,7 +67,7 @@ double vent_calculation::get_FSSA_vent_area()
                             if (Pn > 1197){
                                 evaflag = true;
                             } else {
-                                // Exit Message: Existing vent Equivalent leakage area is sufficient
+                                cout << "Existing vent Equivalent leakage area is sufficient" << endl;
                                 return 0;
                             }
                         }
@@ -79,10 +81,10 @@ double vent_calculation::get_FSSA_vent_area()
                 double Pn = (7251 - (77.29*rel_humidity))*(pow(((An)/(encl_volume*temperature)/desg_concnt) , (-1.0318)));
 
                 if(Pp > 239){
-                    // Error Message "Positive pressure is higher than limit 239 Pa"
+                    cout << "Positive pressure is higher than limit 239 Pa" << endl;
                     return -1;
                 } else  if (Pn > 1197){
-                    // Error Message "Negative pressure is higher than limit 1197 Pa"
+                    cout << "Negative pressure is higher than limit 1197 Pa" << endl;
                     return -2;
                 } else {
 
@@ -92,13 +94,12 @@ double vent_calculation::get_FSSA_vent_area()
                     return fmax(Ap,An);
                 }
 
-
             } else {
-                // Error Message Discharge time is outside of valid interval [6.. 10s]
+                cout << "Discharge time is outside of valid interval [6.. 10s]" << endl;
             }
 
         } else {
-            // Error Message "Agent concentration is outside of valid interval [6.. 10s]
+            cout << "Agent concentration is outside of valid interval [6.. 10s]" << endl;
         }
 
 
@@ -121,7 +122,10 @@ double vent_calculation::get_FSSA_vent_area()
                             if (Pn > 958){
                                 evaflag = true;
                             } else {
-                                // Exit Message: Existing vent Equivalent leakage area is sufficient
+                                cout << "Existing vent Equivalent leakage area is sufficient " << endl;
+                                /*
+                                 * Return code 0 for existing leakage area is sufficient
+                                 */
                                 return 0;
                             }
                         }
@@ -135,10 +139,16 @@ double vent_calculation::get_FSSA_vent_area()
                 double Pn = (7251-77.29*(rel_humidity))*((1-0.3935) * log(((An)/(encl_volume*temperature)/desg_concnt)));
 
                 if(Pp > 383){
-                    // Error Message "Positive pressure is higher than limit 383 Pa"
+                    cout <<  "Positive pressure is higher than limit 383 Pa" << endl;
+                    /*
+                     * Fatal Return code type 1
+                     */
                     return -1;
                 } else  if (Pn > 958){
-                    // Error Message "Negative pressure is higher than limit 958 Pa"
+                    cout << "Negative pressure is higher than limit 958 Pa" << endl;
+                    /*
+                     * Fatal Return code type 2
+                     */
                     return -2;
                 } else {
 
@@ -149,11 +159,11 @@ double vent_calculation::get_FSSA_vent_area()
                 }
 
             } else {
-                // Error Message Discharge time is outside of valid interval [6.. 10s]
+                cout << "Discharge time is outside of valid interval [6.. 10s]" << endl;
             }
 
         } else {
-            // Error Message "Agent concentration is outside of valid interval [6.25.. 10.5s]
+            cout << "Agent concentration is outside of valid interval [6.25.. 10.5s]" << endl;
         }
 
 
