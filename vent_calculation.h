@@ -19,13 +19,13 @@ private:
 	double mass_fl_rate_agent;  // Mass Flow of Extinguishant (kgs/second)
 	int agent_index;            // Extinguishant Agent Index
 	double discharge_time;      // Discharge Time (t)
-  double temperature;         // Temperature
+    double temperature;         // Temperature
 
-  double eva = 1.0;           // Existing Vent Area
-  double pa_limit;            // Enclosure pressure Limit
-  double sf_area = 1.0;       // Saftey factor for vent area
-  double rel_humidity;        // Relative Humidity applicable for Agent 1,2,3,4 (RH)
-  int hd_index;               // Hardware Index
+    double eva = 1.0;           // Existing Vent Area
+    double pa_limit;            // Enclosure pressure Limit
+    double sf_area = 1.0;       // Saftey factor for vent area
+    double rel_humidity;        // Relative Humidity applicable for Agent 1,2,3,4 (RH)
+    int hd_index;               // Hardware Index
 
 	double FIA_Area;            // Total Vent Area (Sq mtr)
 	double FSSA_Area;           // Pressure Relief Vent Area
