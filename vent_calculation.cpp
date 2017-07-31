@@ -183,12 +183,63 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
     } else if ( agent_index = 3 ){
 
         if( hw_index == 4 ) {
-            if ( design_concentration > 34.2 && design_concentration < 50 ) {
-                if ( discharge_time > 8 && discharge_time < 10.5 ) {
+            if ( design_concentration > 8 && design_concentration < 10.5 ) {
+                if ( discharge_time > 6 && discharge_time < 10 ) {
                     if ( ext_vent_area > 0 ) {
 
-                        double pos_pressure = pow((10.298 *((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.285);
-                        boolean positive_flag = false;
+                        double pos_pressure = pow((( 508.7 + 3.23 * ( rel_humidity )) * (( ext_vent_area ) / ( encl_volume * discharge_time ) / design_concentration )), -1.037 );
+                        double neg_pressure = pow((( 980.3 - 10.45 * (rel_humidity)) * (( ext_vent_area ) / ( encl_volume * discharge_time ) / design_concentration )) , -1.039 );
+
+                        bool positive_flag = false;
+                        if ( pos_pressure > pressure_limit || neg_pressure > pressure_limit) {
+
+
+                        } else {
+                            if ( pos_pressure > 1479 ) {
+
+                            } else if ( neg_pressure > 479 ) {
+
+                            } else {
+                                cout << "Existing vent (Equivalent leakage) area is sufficient" << endl;
+                                return 0;
+                            }
+
+
+                        }
+                    }
+                    double pos_vent_area = pow(((1328 * encl_volume * safety_factor_area * design_concentration)/ (discharge_time * pressure_limit)),(-0.7783));
+                    double pos_pressure = pow((10.298 * ( pos_vent_area / encl_volume  * discharge_time / design_concentration )), -1.285);
+
+                    if (pos_pressure > 958) {
+                        cout << "Positive pressure is higher than limit 958" << endl;
+                        return -2;
+                    }
+
+                    double req_vent_area = pos_vent_area - ext_vent_area;
+                    return req_vent_area;
+
+                } else {
+                    cout << "Discharge Time is outside of valid interval [30 .. 60]" << endl;
+                    return -2;
+                }
+            } else {
+                cout << "Agent concentration is outside of valid interval [34.2 .. 50%]" << endl;
+                return -2;
+            }
+        } else {
+            cout << "Agent HFC-125 can be calculated for Fike hardware only" << endl;
+            return -2;
+        }
+
+    } else if ( agent_index = 4 ) {
+
+        if( hw_index == 2 || hw_index == 3 ) {
+            if ( design_concentration > 18 && design_concentration < 30 ) {
+                if ( discharge_time > 6 && discharge_time < 10 ) {
+                    if ( ext_vent_area > 0 ) {
+
+                        double pos_pressure = pow((3218 + *((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.285);
+                        bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
                             positive_flag = true;
@@ -230,12 +281,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
             return -2;
         }
 
-
-    } else if ( agent_index = 4 ){
-
-
-
-    } else if ( agent_index = 5 || agent_index = 7 ){
+    } else if ( agent_index = 5 || agent_index = 7 ) {
 
 
 
@@ -247,7 +293,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
                     if ( ext_vent_area > 0 ) {
 
                         double pos_pressure = pow((10.298 *((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.285);
-                        boolean positive_flag = false;
+                        bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
                             positive_flag = true;
@@ -296,7 +342,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
                     if ( ext_vent_area > 0 ) {
 
                         double pos_pressure = pow((10.462 *((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.188);
-                        boolean positive_flag = false;
+                        bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
                             positive_flag = true;
