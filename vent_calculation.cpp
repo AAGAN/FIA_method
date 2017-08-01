@@ -148,8 +148,8 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
                 double pos_vent_area = (13.02 * encl_volume * safety_factor_area * design_concentration / discharge_time ) * exp( - pressure_limit / (162.1+1.029 * (rel_humidity)));
                 double neg_vent_area = (12.69 * encl_volume * safety_factor_area * design_concentration / discharge_time ) * exp( - pressure_limit / (757.1-8.072 * (rel_humidity)));
 
-                double pos_pressure = (415.9 + (2.64 * rel_humidity)) * ((1-0.3896) * log(((pos_vent_area)/(encl_volume * discharge_time) / design_concentration)));
-                double neg_pressure = (1925 - (20.52 * rel_humidity)) * ((1-0.3935) * log(((neg_vent_area)/(encl_volume * discharge_time) / design_concentration)));
+                 pos_pressure = (415.9 + (2.64 * rel_humidity)) * ((1-0.3896) * log(((pos_vent_area)/(encl_volume * discharge_time) / design_concentration)));
+                 neg_pressure = (1925 - (20.52 * rel_humidity)) * ((1-0.3935) * log(((neg_vent_area)/(encl_volume * discharge_time) / design_concentration)));
 
                 if(pos_pressure > 383){
                     cout <<  "Positive pressure is higher than limit 383 " << endl;
@@ -238,7 +238,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
                 if ( discharge_time > 6 && discharge_time < 10 ) {
                     if ( ext_vent_area > 0 ) {
 
-                        double pos_pressure = pow((3218 + *((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.285);
+                        double pos_pressure = pow((3218 + ((ext_vent_area)/(encl_volume*discharge_time)/design_concentration)),-1.285);
                         bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
@@ -281,7 +281,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
             return -2;
         }
 
-    } else if ( agent_index = 5 || agent_index = 7 ) {
+    } else if ( agent_index == 5 || agent_index == 7 ) {
 
 
 
