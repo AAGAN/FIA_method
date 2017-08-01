@@ -116,7 +116,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
         }
 
 
-    } else if ( agent_index = 2){
+    } else if ( agent_index == 2){
 
         if( design_concentration > 6.25 && design_concentration < 10.5 ){
 
@@ -180,7 +180,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
             cout << "Agent concentration is outside of valid interval [6.25.. 10.5s]" << endl;
         }
 
-    } else if ( agent_index = 3 ){
+    } else if ( agent_index == 3 ){
 
         if( hw_index == 4 ) {
             if ( design_concentration > 8 && design_concentration < 10.5 ) {
@@ -231,7 +231,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
             return -2;
         }
 
-    } else if ( agent_index = 4 ) {
+    } else if ( agent_index == 4 ) {
 
         if( hw_index == 2 || hw_index == 3 ) {
             if ( design_concentration > 18 && design_concentration < 30 ) {
@@ -285,7 +285,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
 
 
 
-    } else if ( agent_index = 6 ) {
+    } else if ( agent_index == 6 ) {
 
         if( hw_index == 4 ) {
             if ( design_concentration > 34.2 && design_concentration < 50 ) {
@@ -334,7 +334,7 @@ double vent_calculation::get_FSSA_vent_area(double ext_vent_area, double pressur
             cout << "Agent IG-55PI can be calculated for Fike hardware only" << endl;
             return -2;
         }
-    } else if ( agent_index = 8 ){
+    } else if ( agent_index == 8 ){
 
         if( hw_index == 1 ) {
             if ( design_concentration > 34.2 && design_concentration < 52 ) {
