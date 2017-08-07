@@ -32,7 +32,7 @@ int main(){
      * @param ext_vent_press
      * @param neg_press_limit
      */
-    cout << vent_area_agent_non_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 0 , 1 , 0.042) << endl;
+    //cout << vent_area_agent_non_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 0 , 1 , 0.042) << endl;
 
     auto vent_area_agent_liquifiable = vent_calculation(
             0.0,     // Extinguishing agent
@@ -42,11 +42,11 @@ int main(){
             0.0      // Relative Humidity
     );
 
-    cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 0 , 0.042 ) << endl;
+    //cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 0 , 0.042 ) << endl;
 
-    cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 1 , 0.042 ) << endl;
+   // cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 1 , 0.042 ) << endl;
 
-    cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 2 , 0.042 ) << endl;
+   // cout << vent_area_agent_liquifiable.get_FIA_vent_area(20 , 260 , 500 , 0.8494 , 6.74 , 1 , 2 , 0.042 ) << endl;
 
 
     auto vent_area_agent_1 = vent_calculation(
@@ -57,7 +57,7 @@ int main(){
             30.0     // Relative Humidity
     );
 
-    //cout << vent_area_agent_1.get_FSSA_vent_area(0.015 , 225.0 , 1.1 , 0) << endl;
+    cout << vent_area_agent_1.get_FSSA_vent_area(0.015 , 225.0 , 1.1 , 0) << endl;
     auto vent_area_agent_2 = vent_calculation(
             2.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)

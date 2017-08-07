@@ -77,8 +77,8 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
             /*
              * calculating for agent type HFC-23
              */
-            double pos_pressure_excur = pow((0.08827 * (( total_vent_area / spec_vol_ext ) * ( discharge_time / encl_volume ) )), -1.165) *(0.81 + 0.51 * (rel_humidity/100));
-            double pos_total_vent_area =  0.12384*(encl_volume/discharge_time)* spec_vol_ext * pow(( pos_pressure_excur /0.81+0.51*(rel_humidity/100)),-0.8587);
+            double pos_pressure_excur = pow((0.08827 * (( total_vent_area / spec_vol_ext ) * ( discharge_time / design_concentration ) )), -1.165) *(0.81 + 0.51 * (rel_humidity/100));
+            double pos_total_vent_area =  0.12384*(design_concentration/discharge_time)* spec_vol_ext * pow(( pos_pressure_excur /0.81+0.51*(rel_humidity/100)),-0.8587);
             cout << endl;
             cout << "pos_pressure_excur pressure_excur 0" << pos_pressure_excur << endl;
             cout << "pos_total_vent_area " << pos_total_vent_area << endl;
