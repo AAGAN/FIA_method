@@ -79,17 +79,22 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
              */
             double pos_pressure_excur = pow((0.08827 * (( total_vent_area / spec_vol_ext ) * ( discharge_time / encl_volume ) )), -1.165) *(0.81 + 0.51 * (rel_humidity/100));
             double pos_total_vent_area =  0.12384*(encl_volume/discharge_time)* spec_vol_ext * pow(( pos_pressure_excur /0.81+0.51*(rel_humidity/100)),-0.8587);
+            cout << endl;
             cout << "pos_pressure_excur pressure_excur 0" << pos_pressure_excur << endl;
             cout << "pos_total_vent_area " << pos_total_vent_area << endl;
         } else if( pressure_excur == 1 ) {
 
             if ( neg_press_excur == 0 ) {
+            /*
+             * calculating for agent type FK-5-1-12
+             */
+                double pos_pressure_excur = pow( ( 0.042649 * (( total_vent_area / encl_volume ) * ( discharge_time / design_concentration ) ) ), -1.0334 ) *( 0.81 + 0.51 * (rel_humidity/100));
+                double neg_pressure_excur = pow( ( 0.32170 * (( total_vent_area / encl_volume ) * ( discharge_time / design_concentration ) ) ), -1.0318 ) *( 1.68 - 1.79 * (rel_humidity/100));
 
-                double pos_pressure_excur = pow( ( 0.042649 * (( total_vent_area / encl_volume ) * ( discharge_time / encl_volume ) ) ), -1.0334 ) *( 0.81 + 0.51 * (rel_humidity/100));
-                double neg_pressure_excur = pow( ( 0.32170 * (( total_vent_area / encl_volume ) * ( discharge_time / encl_volume ) ) ), -1.0318 ) *( 1.68 - 1.79 * (rel_humidity/100));
+                double pos_vent_area = 0.04678 * ( design_concentration / discharge_time ) * spec_vol_ext * pow(( pos_pressure_excur / 0.81+0.51 * ( rel_humidity / 100 ) ),-0.9677);
+                double neg_vent_area = 0.04589 * ( design_concentration / discharge_time ) * spec_vol_ext * pow(( neg_pressure_excur / 1.68-1.79 * ( rel_humidity / 100 ) ),-0.9692);
 
-                double pos_vent_area = 0.04678 * ( encl_volume / discharge_time ) * spec_vol_ext * ( pos_pressure_excur / 0.81+0.51 * ( rel_humidity / 100 ) );
-                double neg_vent_area = 0.04589 * ( encl_volume / discharge_time ) * spec_vol_ext * ( neg_pressure_excur / 1.68-1.79 * ( rel_humidity / 100 ) );
+                cout << endl;
                 cout << "pos_vent_area neg_press_excur 0" << pos_vent_area << endl;
                 cout << "neg_vent_area " << neg_vent_area << endl;
 
@@ -98,11 +103,13 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                /*
                 * calculating for agent type HFC-227-ea
                 */
-               double pos_pressure_excur = ( 48.359 * ( 4.2*log( (spec_vol_ext * encl_volume ) / (total_vent_area * discharge_time) ) - 27.922) * (0.81+0.51*(rel_humidity/100))) ;
-               double neg_pressure_excur = pow( ( 46.444 * ( ( total_vent_area / encl_volume ) * ( discharge_time / encl_volume ) ) ), -1.037 ) *( 1.68 - 1.79 * (rel_humidity/100));
+               double pos_pressure_excur = ( 48.359 * ( 4.2 * log( (spec_vol_ext * design_concentration ) / ( total_vent_area * discharge_time ) ) - 27.922) * (0.81+0.51 * (rel_humidity/100))) ;
+               double neg_pressure_excur = ( 46.444 * ( 9.41 * log( (spec_vol_ext * design_concentration ) / ( total_vent_area * discharge_time ) ) - 62.76) * (1.68-1.79 * (rel_humidity/100))) ;
 
-               double pos_vent_area = 0.050 * ( encl_volume / discharge_time) * spec_vol_ext * ( pos_pressure_excur / 0.81+0.51 * ( rel_humidity / 100 ) );
-               double neg_vent_area = 0.04589 * ( encl_volume / discharge_time) * spec_vol_ext * ( neg_pressure_excur / 1.68-1.79 * ( rel_humidity / 100 ) );
+               double pos_vent_area = 0.00130 * ( design_concentration / discharge_time) * spec_vol_ext * exp(-0.00497 * pos_pressure_excur / 0.81+0.51 * ( rel_humidity / 100 ) );
+               double neg_vent_area = 0.00127 * ( design_concentration / discharge_time) * spec_vol_ext * exp( -0.00222 * neg_pressure_excur / 1.68-1.79 * ( rel_humidity / 100 ) );
+
+               cout << endl;
                cout << "pos_vent_area neg_press_excur 1 " << pos_vent_area << endl;
                cout << "neg_vent_area " << neg_vent_area << endl;
 
@@ -110,14 +117,23 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                 /*
                  * calculating for agent type HFC-125
                  */
-                double pos_pressure_excur = pow( ( 0.045349 * (( total_vent_area / encl_volume ) * ( discharge_time / encl_volume ) ) ), -1.037 ) *( 0.81 + 0.51 * (rel_humidity/100));
-                double neg_pressure_excur = pow( ( 0.03949 * (( total_vent_area / encl_volume ) * ( discharge_time / encl_volume ) ) ), -1.037 ) *( 1.68 - 1.79 * (rel_humidity/100));
+                if(discharge_time >= 6 && discharge_time <= 10) {
+                    double pos_pressure_excur =
+                            pow((0.045349 * ((total_vent_area / encl_volume) * (discharge_time / design_concentration))),
+                                -1.037) * (0.81 + 0.51 * (rel_humidity / 100));
+                    double neg_pressure_excur =
+                            pow((0.03949 * ((total_vent_area / encl_volume) * (discharge_time / design_concentration))),
+                                -1.039) * (1.68 - 1.79 * (rel_humidity / 100));
 
-                double pos_vent_area = 0.050 * ( encl_volume / discharge_time) * spec_vol_ext * ( pos_pressure_excur / 0.81+0.51 * ( rel_humidity / 100 ) );
-                double neg_vent_area = 0.04589 * ( encl_volume / discharge_time) * spec_vol_ext * ( neg_pressure_excur / 1.68-1.79 * ( rel_humidity / 100 ) );
-                cout << "pos_vent_area pressure_excur 2" << pos_vent_area << endl;
-                cout << "neg_vent_area " << neg_vent_area << endl;
+                    double pos_vent_area = 0.050 * (design_concentration / discharge_time) * spec_vol_ext *
+                                           pow(pos_pressure_excur / 0.81 + 0.51 * (rel_humidity / 100), -0.964);
+                    double neg_vent_area = 0.04589 * (design_concentration / discharge_time) * spec_vol_ext *
+                                           pow(neg_pressure_excur / 1.68 - 1.79 * (rel_humidity / 100), -0.9622);
+                    cout << endl;
+                    cout << "pos_vent_area pressure_excur 2" << pos_vent_area << endl;
+                    cout << "neg_vent_area " << neg_vent_area << endl;
 
+                }
 
             }
         }
