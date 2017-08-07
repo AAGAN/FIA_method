@@ -64,8 +64,10 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
         double K1 = 0.773824;
         double K2 = 0.002832967;
 		double spec_vapvol_air =  K1 + (K2 * temperature);
-
+        cout << " spec_vapvol_air= " << spec_vapvol_air << endl;
         spec_vapvol_mix = ( ( design_concentration * spec_vol_ext ) / 100) + ((( 100 - design_concentration) / 100) * spec_vapvol_air );
+
+        cout << " spec_vapvol_mix Sh= " << spec_vapvol_mix << endl;
 
 		FIA_Area = ( mass_flow_rate * spec_vol_ext ) / sqrt( room_strength * spec_vapvol_mix );
         cout << "FIA_Area for Non Liquefiable Agent " << FIA_Area << endl;
