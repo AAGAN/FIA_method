@@ -64,8 +64,8 @@ public:
      * @param mass_flow_rate takes a double for Mass flow rate of extinguishant
      */
 
-    int get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength , double flooding_factor , double mass_flow_rate , double pressure_excur ,
-                              double neg_press_excur, double total_vent_area , double ext_vent_press , double neg_press_limit);
+    double get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength , double flooding_factor , double mass_flow_rate , double pressure_excur ,
+                              double neg_press_excur, double total_vent_area );
 
     /*
      * Method for FSSA Vent Area
@@ -75,7 +75,7 @@ public:
      * @param hd_index takes a int value for Hardware index
      */
 
-    int get_FSSA_vent_area(double ext_vent_area, double pressure_limit , double safety_factor_area , int hw_index);
+    double get_FSSA_vent_area(double ext_vent_area, double pressure_limit , double safety_factor_area , int hw_index);
 
     double FIA();
     double FSSA();
