@@ -59,9 +59,9 @@ public:
      * @param room_strength takes a double for Room Strength
      * @param flooding_factor takes a double for flooding factor
      * @param mass_flow_rate takes a double for Mass flow rate of extinguishant
-     * @param pressure_excur
-     * @param neg_press_excur
-     * @param total_vent_area
+     * @param pressure_excur takes a double for Pressure Exceurion
+     * @param neg_press_excur takes a double for Negative Pressure Exceurion
+     * @param total_vent_area takes a double for Negative Pressure Exceurion
      */
 
     double get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength , double mass_flow_rate , double pressure_excur ,
