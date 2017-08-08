@@ -11,17 +11,14 @@ class vent_calculation {
 
 private:
 
-    double encl_volume;             // Volume (V)
+    double encl_volume;             // Enclosure Volume (V) in m^3
     double design_concentration;    // Design concentration (C) in Percentage
     int agent_index;                // Extinguishant Agent Index
-    double discharge_time;          // Discharge Time (t)
-    double rel_humidity;
+    double discharge_time;          // Discharge Time (t) in seconds
+    double rel_humidity;            // Relative Humidity in Fahrenheit
 
-    //double ext_vent_area = 1.0;     // Existing Vent Area
-    //double pressure_limit;          // Enclosure pressure Limit
-   // double safty_area = 1.0;        // Saftey factor for vent area
 
-    double FIA_Area;                // Total Vent Area (Sq mtr)
+    double FIA_Area;                // Total Vent Area (Sq mtr) for FIA
     double FSSA_Area;               // Pressure Relief Vent Area
 
 
@@ -62,20 +59,23 @@ public:
      * @param room_strength takes a double for Room Strength
      * @param flooding_factor takes a double for flooding factor
      * @param mass_flow_rate takes a double for Mass flow rate of extinguishant
+     * @param pressure_excur
+     * @param neg_press_excur
+     * @param total_vent_area
      */
 
-    double get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength , double flooding_factor , double mass_flow_rate , double pressure_excur ,
+    double get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength , double mass_flow_rate , double pressure_excur ,
                               double neg_press_excur, double total_vent_area );
 
     /*
      * Method for FSSA Vent Area
-     * @param ext_vent_area takes a double value for Existing vent area
-     * @param pressure_limit takes a double value for Enclosure pressure Limit
-     * @param safety_factor_area takes a double value for Safety factor vent area
+     * @param pressure_limit takes a double value for Enclosure pressure Limit in Pascal
      * @param hd_index takes a int value for Hardware index
+     * @param ext_vent_area takes a double value for Existing vent area in meter^2
+     * @param safety_factor_area takes a double value for Safety factor vent area
      */
 
-    double get_FSSA_vent_area(double ext_vent_area, double pressure_limit , double safety_factor_area , int hw_index);
+    double get_FSSA_vent_area( double pressure_limit , int hw_index , double ext_vent_area = 0.0 , double safety_factor_area = 1.0 );
 
     double FIA();
     double FSSA();
