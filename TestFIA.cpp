@@ -21,7 +21,7 @@ int main(){
     );
 
     /*
-     * @param temperature
+     * @param temperature for Liquifiable is not required and is set to 0 as first argument.
      * @param spec_vol_ext
      * @param room_strength
      * @param mass_flow_rate / peak discharge
