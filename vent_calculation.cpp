@@ -33,12 +33,8 @@ using namespace std;
 #define AGENT_KID_FEN_HFC23          -20;
 #define AGENT_KID_FEN_CHEM_55PI100   -21;
 #define AGENT_FIKE_HFC125            -22;
-#define AGENT_CONCEN_18_30           -23;
-#define REL_HUMIDITY_20_80           -24;
-#define AGENT_CONCEN_625_105         -25;
-#define AGENT_CONCEN_18_30           -26;
-#define AGENT_CONCEN_625_105         -27;
-#define AGENT_CONCEN_8_105           -28;
+#define REL_HUMIDITY_20_80           -23;
+#define AGENT_CONCEN_8_105           -24;
 
 
 
@@ -53,14 +49,17 @@ double vent_calculation::FSSA()
 	return FSSA_Area;			// Pressure Relief Vent Area
 }
 
-/* Vent Caluculation for FIA
- * returns Vent Area based on fire Extinguishing Agent Type
- * @param temperature
- * @param spec_vol_ext takes a double for Specific vapour volume of air given
- * @param room_str takes a double for Room Strength
- * @param flood_fact takes a double for flooding factor
- * @param flow_rate takes a double for Mass flow rate of extinguishant
- */
+/*
+     * @method for FIA Vent Area
+     * @param temperature takes a double for Temperature in Fahrenheit
+     * @param spec_vol_extinguishant takes a double for Specific vapour volume of air given in (Cubic meters/Kg)
+     * @param room_strength takes a double for Room Strength in Pascals
+     * @param flooding_factor takes a double for flooding factor in percentage
+     * @param mass_flow_rate takes a double for Mass flow rate of extinguishant in (Kg/seconds)
+     * @param pressure_excur takes a double for Pressure Exceurion in range of (0,1)
+     * @param neg_press_excur takes a double for Negative Pressure Exceurion in range of (0,1,2)
+     * @param total_vent_area takes a double for Total Vent Area in meter^2
+     */
 
 double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength, double mass_flow_rate , double pressure_excur ,
                                             double neg_press_excur, double total_vent_area ) {
@@ -108,6 +107,7 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                                                      pow((pos_pressure_excur / 0.81 + 0.51 * (rel_humidity / 100)),
                                                          -0.8587);
                         cout << "pos_total_vent_area " << pos_total_vent_area << endl;
+
                         return pos_total_vent_area;
                     } else {
                         /*
@@ -160,7 +160,8 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             cout << endl;
                             cout << "pos_vent_area  " << pos_vent_area << endl;
                             cout << "neg_vent_area " << neg_vent_area << endl;
-                            return pos_vent_area;
+                            double req_vent_area = fmax( pos_vent_area , neg_vent_area );
+                            return req_vent_area;
                         } else {
                             /*
                             * Relative Humidity is outside of valid interval [20.. 80]
@@ -215,7 +216,8 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             cout << endl;
                             cout << "pos_vent_area  " << pos_vent_area << endl;
                             cout << "neg_vent_area " << neg_vent_area << endl;
-                            return pos_vent_area;
+                            double req_vent_area = fmax( pos_vent_area , neg_vent_area );
+                            return req_vent_area;
                         } else {
                             /*
                             * Relative Humidity is outside of valid interval [20.. 80]
@@ -266,6 +268,8 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             cout << endl;
                             cout << "pos_vent_area pressure_excur 2" << pos_vent_area << endl;
                             cout << "neg_vent_area " << neg_vent_area << endl;
+                            double req_vent_area = fmax( pos_vent_area , neg_vent_area );
+                            return req_vent_area;
                         } else {
                             /*
                             * Relative Humidity is outside of valid interval [20.. 80]
@@ -288,14 +292,15 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
         }
     }
 }
+
 /*
- *  Calculate FSSA Vent Area
- *  @param ext_vent_area takes a double value for Existing vent area
- *  @param pressure_limit takes a double value for Enclosure pressure Limit
- *  @param safety_factor_area takes a double value for Safety factor vent area
- *  @param rel_humidity takes a double value for Relative Humidity of agent
- *  @param hd_index takes a int value for Hardware index
+ * Method for FSSA Vent Area
+ * @param pressure_limit takes a double value for Enclosure pressure Limit in Pascal
+ * @param hd_index takes a int value for Hardware index
+ * @param ext_vent_area takes a double value for Existing vent area in meter^2
+ * @param safety_factor_area takes a double value for Safety factor vent area
  */
+
 double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index , double ext_vent_area , double safety_factor_area )
 {
     if(agent_index == 1){
@@ -352,7 +357,7 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     neg_vent_area = neg_vent_area * pow( 10, -4 ) - (ext_vent_area) ;
                     cout << "pos_pressure = " << pos_pressure << endl;
                     cout << "neg_pressure = " << neg_pressure << endl;
-                    double req_vent_area = max(pos_vent_area,neg_vent_area);
+                    double req_vent_area = fmax(pos_vent_area,neg_vent_area);
                     cout << "req_vent_area = " << req_vent_area << endl;
 
                     return req_vent_area;
@@ -515,7 +520,7 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     pos_vent_area = (pos_vent_area * pow( 10, -4 )) - ext_vent_area ;
                     neg_vent_area = neg_vent_area * pow( 10, -4 ) - ext_vent_area ;
 
-                    double req_vent_area = max( pos_vent_area , neg_vent_area );
+                    double req_vent_area = fmax( pos_vent_area , neg_vent_area );
                     cout << " vent_area =" << req_vent_area << endl;
 
                     return req_vent_area;
