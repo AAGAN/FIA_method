@@ -64,20 +64,17 @@ double vent_calculation::FSSA()
 double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength, double mass_flow_rate , double pressure_excur ,
                                             double neg_press_excur, double total_vent_area ) {
     cout << "get_FIA_vent_area agent index =" << agent_index << endl;
-    if (agent_index == 1) {                        // Non Liquefiable Agent
+    if (agent_index == 1) {                            // Non Liquefiable Agent
 
         double spec_vapvol_mix;                        // Specific Vapour Volume of Homogeneous
         double K1 = 0.773824;
         double K2 = 0.002832967;
         double spec_vapvol_air = K1 + (K2 * temperature);
-        cout << " spec_vapvol_air= " << spec_vapvol_air << endl;
+
         spec_vapvol_mix = ((design_concentration * spec_vol_ext) / 100) +
                           (((100 - design_concentration) / 100) * spec_vapvol_air);
 
-        cout << " spec_vapvol_mix Sh= " << spec_vapvol_mix << endl;
-
         FIA_Area = (mass_flow_rate * spec_vol_ext) / sqrt(room_strength * spec_vapvol_mix);
-        cout << "FIA_Area for Non Liquefiable Agent " << FIA_Area << endl;
         return FIA_Area;
 
     } else if (agent_index == 0) {                    // Liquefiable Agent
@@ -86,7 +83,6 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
             /*
              * calculating for agent type HFC-23
              */
-            cout << "HFC-23" << endl;
             if (discharge_time >= 6 && discharge_time <= 10) {
                 if (design_concentration >= 18 && design_concentration <= 30) {
                     if (rel_humidity >= 20 && rel_humidity <= 80) {
@@ -102,11 +98,9 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             return VENT_AREA_OK;
                         }
 
-                        cout << "pos_pressure_excur " << pos_pressure_excur << endl;
                         double pos_total_vent_area = 0.12384 * (design_concentration / discharge_time) * spec_vol_ext *
                                                      pow((pos_pressure_excur / 0.81 + 0.51 * (rel_humidity / 100)),
                                                          -0.8587);
-                        cout << "pos_total_vent_area " << pos_total_vent_area << endl;
 
                         return pos_total_vent_area;
                     } else {
@@ -157,9 +151,6 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                                                    pow((neg_pressure_excur / 1.68 - 1.79 * (rel_humidity / 100)),
                                                        -0.9692);
 
-                            cout << endl;
-                            cout << "pos_vent_area  " << pos_vent_area << endl;
-                            cout << "neg_vent_area " << neg_vent_area << endl;
                             double req_vent_area = fmax( pos_vent_area , neg_vent_area );
                             return req_vent_area;
                         } else {
@@ -199,25 +190,25 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             cout << "pos_pressure_excur  " << pos_pressure_excur << endl;
                             cout << "neg_pressure_excur " << neg_pressure_excur << endl;
 
-                            if (pos_pressure_excur <= 380) {
+                            if (pos_pressure_excur <= 380 || neg_pressure_excur <= -1000) {
 
-                            } else if (neg_pressure_excur <= -1000) {
+                                double pos_vent_area = 0.00130 * (design_concentration / discharge_time) * spec_vol_ext *
+                                                       exp(-0.00497 * pos_pressure_excur / 0.81 +
+                                                           0.51 * (rel_humidity / 100));
+                                double neg_vent_area = 0.00127 * (design_concentration / discharge_time) * spec_vol_ext *
+                                                       exp(-0.00222 * neg_pressure_excur / 1.68 -
+                                                           1.79 * (rel_humidity / 100));
+
+                                cout << endl;
+                                cout << "pos_vent_area  " << pos_vent_area << endl;
+                                cout << "neg_vent_area " << neg_vent_area << endl;
+                                double req_vent_area = fmax( pos_vent_area , neg_vent_area );
+                                return req_vent_area;
 
                             } else {
                                 return VENT_AREA_OK;
                             }
-                            double pos_vent_area = 0.00130 * (design_concentration / discharge_time) * spec_vol_ext *
-                                                   exp(-0.00497 * pos_pressure_excur / 0.81 +
-                                                       0.51 * (rel_humidity / 100));
-                            double neg_vent_area = 0.00127 * (design_concentration / discharge_time) * spec_vol_ext *
-                                                   exp(-0.00222 * neg_pressure_excur / 1.68 -
-                                                       1.79 * (rel_humidity / 100));
 
-                            cout << endl;
-                            cout << "pos_vent_area  " << pos_vent_area << endl;
-                            cout << "neg_vent_area " << neg_vent_area << endl;
-                            double req_vent_area = fmax( pos_vent_area , neg_vent_area );
-                            return req_vent_area;
                         } else {
                             /*
                             * Relative Humidity is outside of valid interval [20.. 80]
@@ -314,9 +305,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     double pos_pressure = (467.6 + 2.969 * (rel_humidity)) * pow(( ext_vent_area  *   pow(10,4)/  encl_volume * discharge_time  / design_concentration ), -1.0334 );
                     double neg_pressure = (7251 - 77.29 * (rel_humidity)) * pow(( ext_vent_area  *   pow(10,4) /  encl_volume * discharge_time  / design_concentration  ), -1.0318 );
 
-                    cout << "pos_pressure = " << pos_pressure << endl;
-                    cout << "neg_pressure = " << neg_pressure << endl;
-
                     if( pos_pressure > pressure_limit || neg_pressure > pressure_limit ){
                         evaflag = true;
                     } else {
@@ -336,29 +324,19 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                 double pos_vent_area = ( 468.1 * encl_volume * safety_factor_area * design_concentration ) / discharge_time * pow((pressure_limit / ( 0.8136 + 0.005166 * (rel_humidity))), -0.9677 );
                 double neg_vent_area = ( 3433 * encl_volume * safety_factor_area * design_concentration) / discharge_time * pow((pressure_limit / ( 1.6305 - 0.01738 * (rel_humidity))), -0.9692 );
 
-                cout << "pos_vent_area = " << pos_vent_area << endl;
-                cout << "neg_vent_area = " << neg_vent_area << endl;
-
                 double pos_pressure = (467.6 + 2.969 * (rel_humidity) ) * pow((pos_vent_area/encl_volume * discharge_time / design_concentration), -1.0334);
                 double neg_pressure = (7251 - 77.29 * (rel_humidity) ) * pow((neg_vent_area/encl_volume * discharge_time / design_concentration) , -1.0318);
 
-                cout << "pos_pressure = " << pos_pressure << endl;
-                cout << "neg_pressure = " << neg_pressure << endl;
-
                 if(pos_pressure > 239){
-                    cout << "Positive pressure is higher than limit 239 " << endl;
                     return POS_PRESSURE_239;
                 } else  if (neg_pressure > 1197){
-                    cout << "Negative pressure is higher than limit 1197 " << endl;
                     return NEG_PRESSURE_1197;
                 } else {
 
                     pos_vent_area = pos_vent_area * pow( 10, -4 ) - (ext_vent_area );
                     neg_vent_area = neg_vent_area * pow( 10, -4 ) - (ext_vent_area) ;
-                    cout << "pos_pressure = " << pos_pressure << endl;
-                    cout << "neg_pressure = " << neg_pressure << endl;
+
                     double req_vent_area = fmax(pos_vent_area,neg_vent_area);
-                    cout << "req_vent_area = " << req_vent_area << endl;
 
                     return req_vent_area;
                 }
@@ -387,9 +365,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     double pos_pressure = ( 415.9 + 2.64 * ( rel_humidity ) ) *  ( 1 - 0.3896  * log((ext_vent_area)* pow(10,4)/  encl_volume * discharge_time  / design_concentration ) );
                     double neg_pressure = ( 1925 - 20.52 * ( rel_humidity ) ) * ( 1 - 0.3935  * log((ext_vent_area )* pow(10,4)/  encl_volume * discharge_time  / design_concentration ) );
 
-                    cout << "pos_pressure = " << pos_pressure << endl;
-                    cout << "neg_pressure = " << neg_pressure << endl;
-
                     if( pos_pressure > pressure_limit || neg_pressure > pressure_limit ){
                         evaflag = true;
                     } else {
@@ -411,16 +386,9 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
 
                     double neg_vent_area = (12.69 * encl_volume * safety_factor_area * design_concentration / discharge_time ) * exp( - pressure_limit / (757.1-8.072 * (rel_humidity)));
 
-                    cout << "pos_vent_area = " << pos_vent_area << endl;
-                    cout << "neg_vent_area = " << neg_vent_area << endl;
-
-
                     pos_pressure = (415.9 + 2.64 * ( rel_humidity )) * (1-0.3896 * log(pos_vent_area/ encl_volume * discharge_time / design_concentration));
 
                     neg_pressure = (1925 - 20.52 * ( rel_humidity )) * (1-0.3935 * log(neg_vent_area/encl_volume * discharge_time / design_concentration));
-
-                    cout << "pos_pressure = " << pos_pressure << endl;
-                    cout << "neg_pressure = " << neg_pressure << endl;
 
                 if(pos_pressure > 383){
                     cout <<  "Positive pressure is higher than limit 383 " << endl;
@@ -439,7 +407,7 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     pos_vent_area = pos_vent_area * pow( 10, -4 ) - ext_vent_area ;
                     neg_vent_area = neg_vent_area * pow( 10, -4 ) - ext_vent_area ;
                     double req_vent_area = fmax( pos_vent_area , neg_vent_area );
-                    cout << "req_vent_area = " <<  req_vent_area << endl;
+
                     return req_vent_area;
              }
             } else {
@@ -466,22 +434,11 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
 
                     if ( ext_vent_area > 0 ) {
 
-                        cout << "ext_vent_area = " << ( pow(10,4) )/ (( encl_volume * discharge_time ) / design_concentration ) << endl;
-                        cout << "encl_volume = " << encl_volume << endl;
-                        cout << "rel_humidity = " << rel_humidity << endl;
-                        cout << "discharge_time = " << discharge_time << endl;
-                        cout << "design_concentration = " << design_concentration << endl;
-
                         double pos_pressure = ( 508.7 + 3.23 * ( rel_humidity )) *  pow(( ext_vent_area  *   pow(10,4) /  encl_volume * discharge_time  / design_concentration  ) , -1.037 );
                         double neg_pressure = ( 980.3 - 10.45 * ( rel_humidity )) * pow(( ext_vent_area  *  pow(10,4)  /  encl_volume * discharge_time  / design_concentration  ) , -1.039 );
-
-                        cout << "pos_pressure = " << pos_pressure << endl;
-                        cout << "neg_pressure = " << neg_pressure << endl;
-
                         bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit || neg_pressure > pressure_limit ) {
-
 
                         } else {
                             if ( pos_pressure > 1479 ) {
@@ -492,22 +449,14 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                                 cout << "Existing vent (Equivalent leakage) area is sufficient" << endl;
                                 return VENT_AREA_OK;
                             }
-
-
                         }
                     }
 
                     double pos_vent_area = ( 500.3 * encl_volume * safety_factor_area * design_concentration ) / discharge_time * pow((pressure_limit / ( 0.8056 + 0.005115 * (rel_humidity))), -0.964 );
                     double neg_vent_area = ( 458.3 * encl_volume * safety_factor_area * design_concentration) / discharge_time * pow((pressure_limit / (1.6809 - 0.0179 * (rel_humidity))), -0.9622 );
 
-                    cout << "pos_vent_area =" << pos_vent_area << endl;
-                    cout << "neg_vent_area =" << neg_vent_area << endl;
-
                     double pos_pressure = ( 508.7 + 3.23 * ( rel_humidity) ) * pow(( pos_vent_area / encl_volume* discharge_time / design_concentration ), -1.037);
                     double neg_pressure = ( 980.3 - 10.45 * ( rel_humidity) ) * pow(( neg_vent_area / encl_volume* discharge_time / design_concentration ), -1.039);
-
-                    cout << "pos_pressure =" << pos_pressure << endl;
-                    cout << "neg_pressure =" << neg_pressure << endl;
 
                     if (pos_pressure > 1479) {
                         cout << "Positive pressure is higher than limit 1479" << endl;
@@ -521,8 +470,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     neg_vent_area = neg_vent_area * pow( 10, -4 ) - ext_vent_area ;
 
                     double req_vent_area = fmax( pos_vent_area , neg_vent_area );
-                    cout << " vent_area =" << req_vent_area << endl;
-
                     return req_vent_area;
 
                 } else {
@@ -553,7 +500,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
 
                         double pos_pressure = ( 3218 + 20.43 * ( rel_humidity )) * pow(( ext_vent_area  *   pow(10,4) /  encl_volume * discharge_time  / design_concentration  ), -1.165 );
                         bool positive_flag = false;
-                        cout << "pos_pressure =" << pos_pressure << endl;
                         if ( pos_pressure > pressure_limit ) {
                             positive_flag = true;
 
@@ -566,16 +512,11 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     double pos_vent_area = ((1239 * encl_volume * safety_factor_area * design_concentration)/ discharge_time) * pow(pressure_limit /(0.8056+0.005115*(rel_humidity)),(-0.8587));
                     double pos_pressure =  ( 3218 + 20.43 * ( rel_humidity )) * pow(( pos_vent_area  /  encl_volume * discharge_time / design_concentration ), -1.165 );
 
-                    cout << "pos_vent_area =" << pos_vent_area << endl;
-                    cout << "pos_pressure =" << pos_pressure << endl;
-
                     if (pos_pressure > 958) {
                         cout << "Positive pressure is higher than limit 958" << endl;
                         return POS_PRESSURE_958;
                     }
-
                     double req_vent_area = (pos_vent_area * pow( 10, -4 )) - ext_vent_area ;
-                    cout << "vent_area =" << req_vent_area << endl;
                     return req_vent_area;
 
                 } else {
@@ -605,9 +546,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     if ( ext_vent_area > 0 ) {
 
                         double pos_pressure =  12875 * pow(( ext_vent_area  *   pow(10,4)/  encl_volume * discharge_time  / design_concentration ) , -1.089 );
-
-                        cout << "pos_pressure =" << pos_pressure << endl;
-
                         bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
@@ -625,16 +563,11 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     double pos_vent_area =  5948 * encl_volume * safety_factor_area * design_concentration /  discharge_time * pow(pressure_limit , -0.9184 );
                     double pos_pressure = 12875 * pow( (pos_vent_area / encl_volume  * discharge_time / design_concentration ), -1.089);
 
-                    cout << "pos_vent_area =" << pos_vent_area << endl;
-                    cout << "pos_pressure =" << pos_pressure << endl;
-
                     if (pos_pressure > 958) {
                         cout << "Positive pressure is higher than limit 958" << endl;
                         return POS_PRESSURE_958;
                     }
-
                     double req_vent_area = (pos_vent_area * pow( 10, -4 )) - ext_vent_area;
-                    cout << "req_vent_area =" << req_vent_area << endl;
                     return req_vent_area;
 
                 } else {
@@ -664,7 +597,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     if ( ext_vent_area > 0 ) {
 
                         double pos_pressure = 10298 * pow(( ext_vent_area  *   pow(10,4)/  encl_volume * discharge_time  / design_concentration ), -1.285 );
-                        cout << "pos_pressure =" << pos_pressure << endl;
                         bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
@@ -679,9 +611,8 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                         }
                     }
                     double pos_vent_area = 1328 * encl_volume * safety_factor_area * design_concentration /  discharge_time * pow(pressure_limit , -0.7783 );
-                    cout << "pos_vent_area =" << pos_vent_area << endl;
+
                     double pos_pressure = 10298  * pow( (pos_vent_area / encl_volume  * discharge_time / design_concentration ), -1.285);
-                    cout << "pos_pressure =" << pos_pressure << endl;
 
                     if (pos_pressure > 958) {
                         /*
@@ -691,7 +622,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     }
 
                     double req_vent_area = (pos_vent_area * pow( 10, -4 )) - ext_vent_area;
-                    cout << "req_vent_area =" << req_vent_area << endl;
                     return req_vent_area;
 
                 } else {
@@ -721,7 +651,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     if ( ext_vent_area > 0 ) {
 
                         double pos_pressure = 10462 * pow(( ext_vent_area  *   pow(10,4)/  encl_volume * discharge_time  / design_concentration ),-1.188);
-                        cout << "pos_pressure =" << pos_pressure << endl;
                         bool positive_flag = false;
 
                         if ( pos_pressure > pressure_limit ) {
@@ -737,9 +666,7 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     }
 
                     double pos_vent_area = 2416 * encl_volume * safety_factor_area * design_concentration /  discharge_time * pow(pressure_limit , (-0.8417) );
-                    cout << "pos_vent_area =" << pos_vent_area << endl;
                     double pos_pressure = 10462  * pow( (pos_vent_area / encl_volume  * discharge_time / design_concentration ), -1.188);
-                    cout << "pos_pressure =" << pos_pressure << endl;
 
                     if (pos_pressure > 958) {
                         cout << "Positive pressure is higher than limit 958" << endl;
@@ -747,7 +674,6 @@ double vent_calculation::get_FSSA_vent_area(double pressure_limit , int hw_index
                     }
 
                     double req_vent_area = (pos_vent_area * pow( 10, -4 )) - ext_vent_area;
-                    cout << "req_vent_area =" << req_vent_area << endl;
                     return req_vent_area;
 
                 } else {

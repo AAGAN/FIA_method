@@ -70,7 +70,7 @@ public:
     /*
      * Method for FSSA Vent Area
      * @param pressure_limit takes a double value for Enclosure pressure Limit in Pascal
-     * @param hd_index takes a int value for Hardware index
+     * @param hd_index takes a int value for Hardware index 1,2,3,4,5 based on
      * @param ext_vent_area takes a double value for Existing vent area in meter^2 and default is 0.0
      * @param safety_factor_area takes a double value for Safety factor vent area and default is 1.0
      */
