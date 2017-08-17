@@ -53,30 +53,51 @@ int main(){
 
     double vent_area = vent_area_agent_liquifiable.get_FIA_vent_area(0 , 125 , 500 , 6.74 , 0 , 0 , 0.042 );    // for HFC-23
     cout << endl;
-    cout << "FIA Vent Area input values " <<endl;
+    cout << "FIA Vent Area input values for HFC-23" <<endl;
     cout << "*********************************************************************************************************"<<endl;
     cout << "Agent index = 0 ( Liquefiable Agent ), Enclosure Volume = 125 , Design Concentration = 9.2 " <<endl ;
-    cout << "Discharge Time = 9.2 , Relative Humidity = 50 ,temperature = 0 (Not Required for Liquifiable ), spec_vol_ext = 125 , room_strength = 500" << endl;
+    cout << "Discharge Time = 9.2 , Relative Humidity = 50 ,temperature = 0 (Not Required for Liquifiable )" <<endl;
+    cout << "spec_vol_ext = 125 , room_strength = 500" << endl;
     cout << "mass_flow_rate = 6.74 , pressure_excur = 0 , neg_press_excur = 0 , total_vent_area = 0.042" <<endl;
-    cout << "*********************************************************************************************************"<<endl;
+
     cout << endl;
-    cout << "Required output = 0.242422 " << endl;
-    cout << "FIA Vent Area output after calculation = " << vent_area << endl;
+    cout << "FIA Vent Area output for agent HFC-23 = " << vent_area << endl;
 
 
 
     // for FK-5-1-12
+    cout << endl;
+    cout << "*********************************************************************************************************"<<endl;
+    cout << "FIA Vent Area input values for FK-5-1-12" <<endl;
+    cout << "temperature = 0 (Not Required for Liquifiable )" <<endl;
+    cout << "spec_vol_ext = 125 , room_strength = 500" << endl;
+    cout << "mass_flow_rate = 6.74 , pressure_excur = 1 , neg_press_excur = 0 , total_vent_area = 0.042" <<endl;
+
     vent_area = vent_area_agent_liquifiable.get_FIA_vent_area(0 , 125 , 500 , 6.74 , 1 , 0 , 0.042 ) ;
-     cout << "FK-5-1-12 = " << vent_area << endl;
+    cout << "FIA Vent Area output for agent FK-5-1-12 = " << vent_area << endl;
 
 
     // for HFC-227-ea
+    cout << endl;
+    cout << "*********************************************************************************************************"<<endl;
+    cout << "FIA Vent Area input values for HFC-227-ea" <<endl;
+    cout << "temperature = 0 (Not Required for Liquifiable )" <<endl;
+    cout << "spec_vol_ext = 125 , room_strength = 500" << endl;
+    cout << "mass_flow_rate = 6.74 , pressure_excur = 1 , neg_press_excur = 1 , total_vent_area = 0.042" <<endl;
+
     vent_area = vent_area_agent_liquifiable.get_FIA_vent_area(0 , 125 , 500 , 6.74 , 1 , 1 , 0.042 );
-        cout << "HFC-227-ea = " << vent_area << endl;
+    cout << "FIA Vent Area output for agent HFC-227-ea = " << vent_area << endl;
 
     // for HFC-125
+    cout << endl;
+    cout << "*********************************************************************************************************"<<endl;
+    cout << "FIA Vent Area input values for HFC-125" <<endl;
+    cout << "temperature = 0 (Not Required for Liquifiable )" <<endl;
+    cout << "spec_vol_ext = 260 , room_strength = 500" << endl;
+    cout << "mass_flow_rate = 6.74 , pressure_excur = 1 , neg_press_excur = 2 , total_vent_area = 0.042" <<endl;
+
     vent_area = vent_area_agent_liquifiable.get_FIA_vent_area(0 , 260 , 500  , 6.74 , 1 , 2 , 0.042 );
-     cout << "HFC-125 = " << vent_area << endl;
+    cout << "FIA Vent Area output for agent HFC-125 = " << vent_area << endl;
 
 
     auto vent_area_agent_1 = vent_calculation(

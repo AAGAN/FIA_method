@@ -63,7 +63,7 @@ double vent_calculation::FSSA()
 
 double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol_ext , double room_strength, double mass_flow_rate , double pressure_excur ,
                                             double neg_press_excur, double total_vent_area ) {
-    cout << "get_FIA_vent_area agent index =" << agent_index << endl;
+
     if (agent_index == 1) {                            // Non Liquefiable Agent
 
         double spec_vapvol_mix;                        // Specific Vapour Volume of Homogeneous
@@ -101,7 +101,7 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                         double pos_total_vent_area = 0.12384 * (design_concentration / discharge_time) * spec_vol_ext *
                                                      pow((pos_pressure_excur / 0.81 + 0.51 * (rel_humidity / 100)),
                                                          -0.8587);
-
+                        cout << "pos_total_vent_area =" <<pos_total_vent_area;
                         return pos_total_vent_area;
                     } else {
                         /*
@@ -187,9 +187,6 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                                                                               (total_vent_area * discharge_time)) -
                                                                    62.76) * (1.68 - 1.79 * (rel_humidity / 100)));
 
-                            cout << "pos_pressure_excur  " << pos_pressure_excur << endl;
-                            cout << "neg_pressure_excur " << neg_pressure_excur << endl;
-
                             if (pos_pressure_excur <= 380 || neg_pressure_excur <= -1000) {
 
                                 double pos_vent_area = 0.00130 * (design_concentration / discharge_time) * spec_vol_ext *
@@ -199,9 +196,7 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                                                        exp(-0.00222 * neg_pressure_excur / 1.68 -
                                                            1.79 * (rel_humidity / 100));
 
-                                cout << endl;
-                                cout << "pos_vent_area  " << pos_vent_area << endl;
-                                cout << "neg_vent_area " << neg_vent_area << endl;
+
                                 double req_vent_area = fmax( pos_vent_area , neg_vent_area );
                                 return req_vent_area;
 
@@ -256,9 +251,7 @@ double vent_calculation::get_FIA_vent_area( double temperature , double spec_vol
                             double neg_vent_area = 0.04589 * (design_concentration / discharge_time) * spec_vol_ext *
                                                    pow(neg_pressure_excur / 1.68 - 1.79 * (rel_humidity / 100),
                                                        -0.9622);
-                            cout << endl;
-                            cout << "pos_vent_area pressure_excur 2" << pos_vent_area << endl;
-                            cout << "neg_vent_area " << neg_vent_area << endl;
+
                             double req_vent_area = fmax( pos_vent_area , neg_vent_area );
                             return req_vent_area;
                         } else {
