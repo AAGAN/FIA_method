@@ -65,9 +65,7 @@ double vent_calculation::FSSA() {
      * @param total_vent_area takes a double for Total Vent Area in meter^2
      */
 
-double vent_calculation::get_FIA_vent_area(double temperature, double spec_vol_ext,
-                                           double mass_flow_rate, double total_agent_mass_cylinder_bank,
-                                           double Sair ,  int system_technology_index) {
+double vent_calculation::get_FIA_vent_area(double peek_mass_flow_rate,int system_technology_index ,double total_agent_mass_cylinder_bank, double temperature) {
 
     //cout << "extinguishant_agent_index =" <<extinguishant_agent_index << endl;
     switch (extinguishant_agent_index) {
@@ -80,21 +78,14 @@ double vent_calculation::get_FIA_vent_area(double temperature, double spec_vol_e
         case 4:
             return getVentAreaFIAforAgentIndex_4();
         case 5:
-            return getVentAreaFIAforAgentIndex_5(temperature, Sair , system_technology_index , mass_flow_rate ,total_agent_mass_cylinder_bank , spec_vol_ext);
+            return getVentAreaFIAforAgentIndex_5(system_technology_index , peek_mass_flow_rate , total_agent_mass_cylinder_bank , temperature );
         case 6:
             return ERRCODE_Agent_IG_55PA_Not_Covered_in_FIA;
         case 7:
-            return getVentAreaFIAforAgentIndex_7(temperature, Sair,system_technology_index , mass_flow_rate ,total_agent_mass_cylinder_bank , spec_vol_ext);
+            return getVentAreaFIAforAgentIndex_7(system_technology_index , peek_mass_flow_rate , total_agent_mass_cylinder_bank , temperature );
         case 8:
-            return getVentAreaFIAforAgentIndex_8(temperature, Sair,system_technology_index , mass_flow_rate ,total_agent_mass_cylinder_bank , spec_vol_ext);
+            return getVentAreaFIAforAgentIndex_8(system_technology_index , peek_mass_flow_rate , total_agent_mass_cylinder_bank , temperature );
 
-            //} else if (agent_index == 5) {
-            // return getVentAreaFIAforAgentIndex_5();
-            //} else if (agent_index == 7) {
-            //return getVentAreaFIAforAgentIndex_7();
-            //} else if (agent_index == 8) {
-            // return getVentAreaFIAforAgentIndex_8();
-            //}
     }
 }
 
@@ -294,23 +285,27 @@ double vent_calculation::getVentAreaFIAforAgentIndex_4() {
     }
 }
 
-double vent_calculation::getVentAreaFIAforAgentIndex_5(double temperature, double Sair , int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank ,double spec_vol_ext) {
+double vent_calculation::getVentAreaFIAforAgentIndex_5( int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank, double temperature ) {
 
-    double agent_volume_at_standard_condition = 0.6598 + 0.00242 * 21;
+
+    //cout <<"agent_volume_at_given_condtion =" << agent_volume_at_given_condtion <<endl;
+    double K1 = 0.773824;
+    double K2 = 0.002832967;
+    double specific_vapour_vol_air = K1 + (K2 * temperature);
 
     double agent_volume_at_given_condtion = 0.6598 + 0.00242 * temperature;
-    //cout <<"agent_volume_at_given_condtion =" << agent_volume_at_given_condtion <<endl;
-    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * Sair;
+
+    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * specific_vapour_vol_air;
     double required_vent_area = 0.0;
     //cout <<"specific_volume_of_homogenious_mixture =" << specific_volume_of_homogenious_mixture <<endl;
 
     if(system_technology_index == 1){
-        required_vent_area = safety_factor_vent_area * peak_mass_flow_rate * spec_vol_ext / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
+        required_vent_area = safety_factor_vent_area * peak_mass_flow_rate * agent_volume_at_given_condtion / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
         //cout <<"required_vent_area =" << required_vent_area <<endl;
     } else {
         double constant_mass_flow = total_agent_mass_cylinder_bank / discharge_time;
         cout <<"constant_mass_flow =" << constant_mass_flow <<endl;
-        required_vent_area = safety_factor_vent_area * constant_mass_flow * spec_vol_ext / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
+        required_vent_area = safety_factor_vent_area * constant_mass_flow * agent_volume_at_given_condtion / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
         //cout <<"required_vent_area =" << required_vent_area <<endl;
     }
 
@@ -322,22 +317,23 @@ double vent_calculation::getVentAreaFIAforAgentIndex_5(double temperature, doubl
 
 
 
-double vent_calculation::getVentAreaFIAforAgentIndex_7(double temperature, double Sair , int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank ,double spec_vol_ext) {
-
-    double agent_volume_at_standard_condition = 0.7997 + 0.00293 * 21;
+double vent_calculation::getVentAreaFIAforAgentIndex_7( int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank ,double temperature ) {
 
     double agent_volume_at_given_condtion = 0.7997 + 0.00293 * temperature;
+    double K1 = 0.773824;
+    double K2 = 0.002832967;
+    double specific_vapour_vol_air = K1 + (K2 * temperature);
 
     //cout << "agent_volume_at_given_condtion ="<< agent_volume_at_given_condtion<<endl;
-    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * Sair;
+    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * specific_vapour_vol_air;
     double req_vent_area = 0.0;
     //cout << "specific_volume_of_homogenious_mixture ="<< specific_volume_of_homogenious_mixture<<endl;
     if(system_technology_index == 1){
-        req_vent_area = safety_factor_vent_area * peak_mass_flow_rate * spec_vol_ext / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
+        req_vent_area = safety_factor_vent_area * peak_mass_flow_rate * agent_volume_at_given_condtion / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
         //cout << "req_vent_area ="<< req_vent_area<<endl;
     } else {
         double constant_mass_flow = total_agent_mass_cylinder_bank / discharge_time;
-        req_vent_area = safety_factor_vent_area * constant_mass_flow * spec_vol_ext / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
+        req_vent_area = safety_factor_vent_area * constant_mass_flow * agent_volume_at_given_condtion / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
     }
 
     req_vent_area = req_vent_area - existing_vent_area;
@@ -347,20 +343,22 @@ double vent_calculation::getVentAreaFIAforAgentIndex_7(double temperature, doubl
 }
 
 
-double vent_calculation::getVentAreaFIAforAgentIndex_8(double temperature, double Sair , int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank ,double spec_vol_ext) {
+double vent_calculation::getVentAreaFIAforAgentIndex_8( int system_technology_index, double peak_mass_flow_rate ,double total_agent_mass_cylinder_bank , double temperature) {
 
-    double agent_volume_at_standard_condition = 0.65799 + 0.00239 * 21;
+    double K1 = 0.773824;
+    double K2 = 0.002832967;
+    double specific_vapour_vol_air = K1 + (K2 * temperature);
 
     double agent_volume_at_given_condtion = 0.65799 + 0.00239 * temperature;
 
-    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * Sair;
+    double  specific_volume_of_homogenious_mixture = design_concentration * agent_volume_at_given_condtion /100 + (100-design_concentration)/100  * specific_vapour_vol_air;
     double required_vent_area = 0.0;
 
     if(system_technology_index == 1){
-        required_vent_area = safety_factor_vent_area * peak_mass_flow_rate * spec_vol_ext / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
+        required_vent_area = safety_factor_vent_area * peak_mass_flow_rate * agent_volume_at_given_condtion / sqrt( pressure_limit * specific_volume_of_homogenious_mixture);
     } else {
         double constant_mass_flow = total_agent_mass_cylinder_bank / discharge_time;
-        required_vent_area = safety_factor_vent_area * constant_mass_flow * spec_vol_ext / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
+        required_vent_area = safety_factor_vent_area * constant_mass_flow * agent_volume_at_given_condtion / sqrt(pressure_limit * specific_volume_of_homogenious_mixture);
     }
 
     required_vent_area = required_vent_area - existing_vent_area;
@@ -377,7 +375,7 @@ double vent_calculation::getVentAreaFIAforAgentIndex_8(double temperature, doubl
  * @param safety_factor_area takes a double value for Safety factor vent area
  */
 
-double vent_calculation::get_FSSA_vent_area(double pressure_limit, int hw_index, double safety_factor_area) {
+double vent_calculation::get_FSSA_vent_area(int hw_index, double safety_factor_area) {
     switch (extinguishant_agent_index) {
         case 1:
             return getVentAreaFSSAforHWAgentIndex_1();

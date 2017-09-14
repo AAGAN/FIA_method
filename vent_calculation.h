@@ -37,6 +37,7 @@ public:
 
     /*
      * Constructor for vent_calculation
+     * @param gudance_doc_index takes an int for identifying FIA or FSSA (1 = FIA, 2 = FSSA)
      * @param agent_id takes an int argument for Extinguishant agent index
      * @param volume takes a double value for Enclosure volume in m^3
      * @param design_concen takes a double value for Design concentration in Percentage
@@ -69,16 +70,13 @@ public:
 
     /*
      * @method for FIA Vent Area
-     * @param temperature takes a double for Temperature in Fahrenheit , if not required should be set to 0
-     * @param spec_vol_extinguishant takes a double for Specific vapour volume of air given in (Cubic meters/Kg)
-     * @param mass_flow_rate takes a double for Mass flow rate of extinguishant in (Kg/seconds)
-     * @param total_agent_mass_cylinder_bank takes a double takes double (Kg)
-     * @param Sair takes double (m^3/Kg)
+     * @param peek_mass_flow_rate takes a double for Peek Mass flow rate of extinguishant in (Kg/seconds)
      * @param system_technology_index takes int for identifying Orifice or IFloy System(1=iFlow , else Orifice)
+     * @param total_agent_mass_cylinder_bank takes a double takes double (Kg)
+     * @param temperature takes a double for Temperature in Fahrenheit , if not required should be set to 0
      */
 
-    double get_FIA_vent_area(double temperature, double spec_vol_ext, double mass_flow_rate, double total_agent_mass_cylinder_bank,
-                             double Sair, int system_technology_index);
+    double get_FIA_vent_area(double peek_mass_flow_rate = 0, int system_technology_index = 0, double total_agent_mass_cylinder_bank =0, double temperature = 0);
 
     /*
      * Method for FSSA Vent Area
@@ -88,7 +86,7 @@ public:
      * @param safety_factor_area takes a double value for Safety factor vent area and default is 1.0
      */
 
-    double get_FSSA_vent_area(double pressure_limit, int hw_index, double safety_factor_area = 1.0);
+    double get_FSSA_vent_area(int hw_index, double safety_factor_area = 1.0);
 
     double FIA();
 
@@ -107,17 +105,18 @@ public:
 
     double getVentAreaFIAforAgentIndex_4();
 
-    double getVentAreaFIAforAgentIndex_5(double temperature, double Sair, int system_technology_index,
-                                         double peak_mass_flow_rate, double total_agent_mass_cylinder_bank,
-                                         double spec_vol_ext);
+  /*
+  * @method for FIA Vent Area
+  * @param system_technology_index takes int for identifying Orifice or IFloy System(1=iFlow , else Orifice) if not required should be set to 0
+  * @param peek_mass_flow_rate takes a double for Peek Mass flow rate of extinguishant in (Kg/seconds) if not required should be set to 0
+  * @param total_agent_mass_cylinder_bank takes a double takes double (Kg) if not required should be set to 0.0
+  * @param temperature takes a double for Temperature in Fahrenheit , if not required should be set to 0
+  */
+    double getVentAreaFIAforAgentIndex_5( int system_technology_index, double peak_mass_flow_rate, double total_agent_mass_cylinder_bank=0 ,double temperature =0 );
 
-    double getVentAreaFIAforAgentIndex_7(double temperature, double Sair, int system_technology_index,
-                                         double peak_mass_flow_rate, double total_agent_mass_cylinder_bank,
-                                         double spec_vol_ext);
+    double getVentAreaFIAforAgentIndex_7( int system_technology_index, double peak_mass_flow_rate, double total_agent_mass_cylinder_bank=0 ,double temperature =0 );
 
-    double getVentAreaFIAforAgentIndex_8(double temperature, double Sair, int system_technology_index,
-                                         double peak_mass_flow_rate, double total_agent_mass_cylinder_bank,
-                                         double spec_vol_ext);
+    double getVentAreaFIAforAgentIndex_8( int system_technology_index, double peak_mass_flow_rate, double total_agent_mass_cylinder_bank=0 ,double temperature=0 );
 
     /*
      * Helper Method for FSSA Vent Area Calculation
