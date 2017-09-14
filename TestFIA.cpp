@@ -275,7 +275,7 @@ int main() {
     cout << "FSSA Vent Area output after calculation = " << vent_area << endl;
 
     auto vent_area_fssa_agent_2 = vent_calculation(
-            2,
+            2,       // guidance document index
             2.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             6.25,    // Design Concentration
@@ -305,7 +305,7 @@ int main() {
     cout << "FSSA Vent Area output after calculation = " << vent_area << endl;
 
     auto vent_area_fssa_agent_3 = vent_calculation(
-            2,
+            2,       // guidance document index
             3.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             8.0,     // Design Concentration
@@ -335,7 +335,7 @@ int main() {
     cout << "FSSA Vent Area output after calculation = " << vent_area << endl;
 
     auto vent_area_fssa_agent_4 = vent_calculation(
-            2,
+            2,       // guidance document index
             4.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             18.0,    // Design Concentration
@@ -366,7 +366,7 @@ int main() {
 
 
     auto vent_area_fssa_agent_5 = vent_calculation(
-            2,
+            2,       // guidance document index
             5.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             37.0,    // Design Concentration
@@ -397,12 +397,12 @@ int main() {
 
 
     auto vent_area_fssa_agent_6 = vent_calculation(
-            2,
+            2,       // guidance document index
             6.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             37.0,    // Design Concentration
             55.0,    // Discharge Time
-            0.0,    // Relative Humidity
+            0.0,     // Relative Humidity
             0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
@@ -428,7 +428,7 @@ int main() {
 
 
     auto vent_area_fssa_agent_8 = vent_calculation(
-            2,
+            2,       // guidance document index
             8.0,     // Extinguishing agent
             283.3,   // Protected Enclosure Volume(S)
             37.0,    // Design Concentration
