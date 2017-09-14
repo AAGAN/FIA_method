@@ -22,7 +22,7 @@ int main() {
             5.2,     // Design Concentration
             9,       // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             225      // Pressure Limit (Pascles)
 
@@ -51,7 +51,7 @@ int main() {
             6.25,    // Design Concentration
             9,       // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5      // Pressure Limit (Pascles)
 
@@ -80,7 +80,7 @@ int main() {
             8,       // Design Concentration
             9,       // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5      // Pressure Limit (Pascles)
 
@@ -112,7 +112,7 @@ int main() {
             18,       // Design Concentration
             9,       // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5      // Pressure Limit (Pascles)
 
@@ -140,7 +140,7 @@ int main() {
             45.2,    // Design Concentration
             9,       // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             500      // Pressure Limit (Pascles)
 
@@ -175,9 +175,9 @@ int main() {
             7.0,     // Extinguishing agent
             530,     // Protected Enclosure Volume(S)
             40.3,    // Design Concentration
-            60,       // Peak discharge time in seconds
+            60,      // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             250      // Pressure Limit (Pascles)
 
@@ -213,7 +213,7 @@ int main() {
             39.9,    // Design Concentration
             60,      // Peak discharge time in seconds
             30,      // Relative Humidity ( Not Required for Non Lequifiable)
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             350      // Pressure Limit (Pascles)
 
@@ -250,7 +250,7 @@ int main() {
             5.2,     // Design Concentration
             9.0,     // Discharge Time
             30.0,    // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             225.0    // Pressure Limit (Pascles)
     );
@@ -280,8 +280,8 @@ int main() {
             283.3,   // Protected Enclosure Volume(S)
             6.25,    // Design Concentration
             9.0,     // Discharge Time
-            30.0,     // Relative Humidity
-            0.015,   // eva
+            30.0,    // Relative Humidity
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
@@ -311,7 +311,7 @@ int main() {
             8.0,     // Design Concentration
             9.0,     // Discharge Time
             30.0,    // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
@@ -341,7 +341,7 @@ int main() {
             18.0,    // Design Concentration
             9.0,     // Discharge Time
             30.0,    // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
@@ -372,7 +372,7 @@ int main() {
             37.0,    // Design Concentration
             55.0,    // Discharge Time
             0.0,      // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
@@ -403,7 +403,7 @@ int main() {
             37.0,    // Design Concentration
             55.0,    // Discharge Time
             0.0,    // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
@@ -434,7 +434,7 @@ int main() {
             37.0,    // Design Concentration
             55.0,    // Discharge Time
             0.0,     // Relative Humidity
-            0.015,   // eva
+            0.015,   // eva (existing vent area or existing leakage area) m^2
             1.1,     // Safty factor for vent area
             239.5    // Pressure Limit (Pascles)
     );
