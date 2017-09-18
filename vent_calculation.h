@@ -13,9 +13,7 @@ private:
 
     double enclosure_volume;            // Enclosure Volume (V) in m^3
     double design_concentration;        // Design concentration (C) in Percentage
-    int guidance_document_index;        // for identifying FIA = 1 or FSSA = 2
     int extinguishant_agent_index;      // Extinguishant Agent Index in numeric range( 1,2,3,4,5,6,7,8 )
-    int system_technology_index;        // Extinguishant Agent Index in numeric range( 1 )
     double discharge_time;              // Discharge Time (t) in seconds
     double relative_humidity;           // Relative Humidity in Hg ( Not Required for Non Lequifiable )
     double existing_vent_area = 0.0;    // existing_vent_area takes a double for Existing Vent Area in meter^2
@@ -37,18 +35,16 @@ public:
 
     /*
      * Constructor for vent_calculation
-     * @param gudance_doc_index takes an int for identifying FIA or FSSA (1 = FIA, 2 = FSSA)
      * @param agent_id takes an int argument for Extinguishant agent index
      * @param volume takes a double value for Enclosure volume in m^3
      * @param design_concen takes a double value for Design concentration in Percentage
-     * @param discharge_time takes a double for Discharge time in seconds
-     * @param Relative Humidity in Hg
-     * @param existing vent area
+     * @param discharge_time takes a double for System Discharge time in seconds
+     * @param Relative Humidity in Percentage
+     * @param existing vent area in m^2
      * @param safety factor vent area
      * @param pressure limit in Pascal
      */
-    vent_calculation(int gudance_doc_index,
-                     int agent_id,
+    vent_calculation(int agent_id,
                      double volume,
                      double design_concen,
                      double discharge_time,
@@ -57,7 +53,6 @@ public:
                      double sf_area,
                      double plimit
     ) :
-            guidance_document_index(gudance_doc_index),
             extinguishant_agent_index(agent_id),
             enclosure_volume(volume),
             design_concentration(design_concen),
@@ -70,23 +65,16 @@ public:
 
     /*
      * @method for FIA Vent Area
-     * @param peek_mass_flow_rate takes a double for Peek Mass flow rate of extinguishant in (Kg/seconds)
      * @param system_technology_index takes int for identifying Orifice or IFloy System(1=iFlow , else Orifice)
+     * @param peek_mass_flow_rate takes a double for Peek Mass flow rate of extinguishant in (Kg/seconds)
      * @param total_agent_mass_cylinder_bank takes a double takes double (Kg)
      * @param temperature takes a double for Temperature in Fahrenheit , if not required should be set to 0
      */
 
-    double get_FIA_vent_area(double peek_mass_flow_rate = 0, int system_technology_index = 0, double total_agent_mass_cylinder_bank =0, double temperature = 0);
+    double get_FIA_vent_area(int system_technology_index = 0, double peek_mass_flow_rate = 0, double total_agent_mass_cylinder_bank = 0, double temperature = 0);
 
-    /*
-     * Method for FSSA Vent Area
-     * @param pressure_limit takes a double value for Enclosure pressure Limit in Pascal
-     * @param hd_index takes a int value for Hardware index 1,2,3,4,5
-     * @param ext_vent_area takes a double value for Existing vent area in meter^2 and default is 0.0
-     * @param safety_factor_area takes a double value for Safety factor vent area and default is 1.0
-     */
 
-    double get_FSSA_vent_area(int hw_index, double safety_factor_area = 1.0);
+    double get_FSSA_vent_area();
 
     double FIA();
 
@@ -121,19 +109,19 @@ public:
     /*
      * Helper Method for FSSA Vent Area Calculation
      */
-    double getVentAreaFSSAforHWAgentIndex_1();
+    double getVentAreaFSSAforAgentIndex_1();
 
-    double getVentAreaFSSAforHWAgentIndex_2();
+    double getVentAreaFSSAforAgentIndex_2();
 
-    double getVentAreaFSSAforHWAgentIndex_3();
+    double getVentAreaFSSAforAgentIndex_3();
 
-    double getVentAreaFSSAforHWAgentIndex_4();
+    double getVentAreaFSSAforAgentIndex_4();
 
-    double getVentAreaFSSAforHWAgentIndex_5_7();
+    double getVentAreaFSSAforAgentIndex_5();
 
-    double getVentAreaFSSAforHWAgentIndex_6();
+    double getVentAreaFSSAforAgentIndex_6();
 
-    double getVentAreaFSSAforHWAgentIndex_8();
+    double getVentAreaFSSAforAgentIndex_8();
 
 
     /*
